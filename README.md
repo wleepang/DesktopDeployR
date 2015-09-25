@@ -54,5 +54,5 @@ To handle the initial creation of the above:
 
 Deployment
 ----------
-The entiry folder structure is copied to the deployed location.
-Optionally, the `.git` repository folder is removed from the deployment.
+The entire folder structure is copied to the deployed location.
+
