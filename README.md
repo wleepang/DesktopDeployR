@@ -52,6 +52,12 @@ The only requirements are
 * the requisite GUI toolkit package dependencies are installed in `app/library`
 
 
+Using a different (newer) version of R
+--------------------------------------
+Simply replace `./dist/R-Protable/` with the version of `R-Portable` that is
+required.
+
+
 Untracked
 ---------
 Due to their potentially large sizes, it is not recommended that the following 
