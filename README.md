@@ -5,6 +5,7 @@ Meets the need to share R based applications without:
 * training end users to use R
 * setting up a centralized web-application server
 
+
 General Application Structure
 -----------------------------
 ```
@@ -38,10 +39,23 @@ General Application Structure
 /README.txt					# - brief description of application
 ```
 
+
+Compatible Application Frameworks
+---------------------------------
+This deployment strategy has been tested to work with both Shiny and RGTK based
+applications.  It is also likely to work with Tcl/Tk based applications as well.
+The only requirements are
+
+* that the application entry point `app.R` have the appropriate launching
+  function calls
+
+* the requisite GUI toolkit package dependencies are installed in `app/library`
+
+
 Untracked
 ---------
 Due to their potentially large sizes, it is not recommended that the following 
-folders be tracked by version control
+folders be tracked by version control (i.e. Git)
 * /app/library/
 * /dist/
 
@@ -51,6 +65,7 @@ To handle the initial creation of the above:
   "/app/library/" as the library location.
   
 * the /dist/ directory is copied from a common /dist/.
+
 
 Deployment
 ----------
