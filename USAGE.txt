@@ -17,7 +17,7 @@ the Portable Apps project.  This effectively creates an isolated installation
 of R that can be used along side a system installation.
 
 It is important to keep R-portable as "clean" as possible.  This will make it 
-easy to upgrade without worrying (too much) about ugrading or reinstalling 
+easy to upgrade without worrying (too much) about upgrading or reinstalling 
 package dependencies used by applications.
 
 
