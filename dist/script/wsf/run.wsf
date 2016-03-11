@@ -1,4 +1,5 @@
 <job id="IncludeExample">
    <script language="JScript" src="js/json2.js"/>
+   <script language="JScript" src="js/JSON.minify.js"/>
    <script language="JScript" src="js/run.js" />
 </job>

@@ -12,7 +12,7 @@ var fConfig = oFSO.OpenTextFile('app\\config.cfg', 1); // 1 = for reading
 var sConfig = (fConfig.AtEndOfStream) ? "" : fConfig.ReadAll();
 
 if (this.JSON) {
-	var oConfig = (sConfig !== "") ? JSON.parse(sConfig) : undefined;
+	var oConfig = (sConfig !== "") ? JSON.parse(JSON.minify(sConfig)) : undefined;
 } else {
 	oShell.Popup('Error: JSON object not found, cannot process configuration');
 	WScript.Quit(1);
