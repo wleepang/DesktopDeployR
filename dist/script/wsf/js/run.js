@@ -30,30 +30,28 @@ if (!oFSO.FolderExists(sLogPath)) {
 //' Define the R interpreter
 //' Rscript.exe is much more efficient than R.exe CMD BATCH
 var Rexe           = "dist\\R-Portable\\App\\R-Portable\\bin\\Rscript.exe";
+var Ropts          = "--vanilla";
 
-//' --vanilla equivalent
-//'Ropts          = "--no-save --no-environ --no-site-file --no-restore --no-Rconsole --no-init-file"
+//' --vanilla implies the following flags:
+//' --no-save --no-environ --no-site-file --no-restore --no-Rconsole --no-init-file
 
-//' however, a site-file (RProfile.site) is desirable
-var Ropts          = "--no-save --no-environ --no-init-file --no-restore --no-Rconsole"
-
-var RScriptFile    = "dist\\script\\R\\run.R"
+var RScriptFile    = "dist\\script\\R\\run.R";
 var Outfile        = sLogPath + "\\" + oConfig.log_filename;
 
 var strCommand     = [Rexe, Ropts, RScriptFile, "1>", Outfile, "2>&1"].join(" ");
-var intWindowStyle = 0
+var intWindowStyle = 0;
 /*
 ' other values:
-' 0 Hide the window and activate another window. 
-' 1 Activate and display the window. (restore size and position) Specify this flag when displaying a window for the first time. 
-' 2 Activate & minimize. 
-' 3 Activate & maximize. 
-' 4 Restore. The active window remains active. 
-' 5 Activate & Restore. 
-' 6 Minimize & activate the next top-level window in the Z order. 
-' 7 Minimize. The active window remains active. 
-' 8 Display the window in its current state. The active window remains active. 
-' 9 Restore & Activate. Specify this flag when restoring a minimized window. 
+' 0 Hide the window and activate another window.
+' 1 Activate and display the window. (restore size and position) Specify this flag when displaying a window for the first time.
+' 2 Activate & minimize.
+' 3 Activate & maximize.
+' 4 Restore. The active window remains active.
+' 5 Activate & Restore.
+' 6 Minimize & activate the next top-level window in the Z order.
+' 7 Minimize. The active window remains active.
+' 8 Display the window in its current state. The active window remains active.
+' 9 Restore & Activate. Specify this flag when restoring a minimized window.
 ' 10 Sets the show-state based on the state of the program that started the application.
 */
 
