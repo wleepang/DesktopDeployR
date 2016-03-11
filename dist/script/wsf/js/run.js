@@ -1,6 +1,9 @@
 // JSON object provided by json2.js since WSH JScript interpreter doesn't have/expose it
 // https://github.com/douglascrockford/JSON-js/blob/master/json2.js
 //
+// JSON.minify provided by https://github.com/getify/JSON.minify
+// to strip out comments from JSON so that it can be parsed without error.
+//
 // This script and dependencies are is loaded into the interpreter using a .wsf file:
 // http://stackoverflow.com/questions/14319592/jscript-dynamically-load-javascript-libraries
 
@@ -40,12 +43,22 @@ if (oConfig.logging.filename) {
 }
 
 //' Define the R interpreter
+var Rbindir        = "dist\\R-Portable\\App\\R-Portable\\bin";
+if (oConfig.r_bindir) {
+	var Rbindir = oConfig.r_bindir;
+}
+
 //' Rscript.exe is much more efficient than R.exe CMD BATCH
-var Rexe           = "dist\\R-Portable\\App\\R-Portable\\bin\\Rscript.exe";
+var Rexe           = Rbindir + "\\Rscript.exe";
 var Ropts          = "--vanilla";
 
 //' --vanilla implies the following flags:
 //' --no-save --no-environ --no-site-file --no-restore --no-Rconsole --no-init-file
+
+if (!oFSO.FileExists(Rexe)) {
+	oShell.Popup('Error: R executable not found:\n' + Rexe);
+	WScript.Quit(1);
+}
 
 var RScriptFile    = "dist\\script\\R\\run.R";
 var Outfile        = sLogPath + "\\" + sLogFile;
