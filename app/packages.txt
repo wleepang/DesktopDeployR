@@ -1,0 +1,11 @@
+# Primary package dependencies for the application that are loaded during
+# startup.
+#
+# If not available, they will be installed into app/library.  Custom source
+# packages need to be installed manually.
+
+jsonlite
+shiny
+dplyr
+ggplot2
+lubridate
