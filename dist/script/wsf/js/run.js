@@ -18,13 +18,25 @@ if (this.JSON) {
 	WScript.Quit(1);
 }
 
-//' Determine User Home directory
-//' Create an application log directory as needed
-var sUPath = oShell.ExpandEnvironmentStrings("%USERPROFILE%");
-var sLogPath = sUPath + "\\." + oConfig.appname;
+// Determine where to keep the error log
+// If deployed to users individually, keep with the deployment (default)
+// If deployed to a central location (e.g. a network share) use a directory in
+// each user's %userprofile%
+sLogPath = 'log';
+if (oConfig.logging.use_userprofile) {
+	//' Determine User Home directory
+	var sUPath = oShell.ExpandEnvironmentStrings("%USERPROFILE%");
+	var sLogPath = sUPath + "\\." + oConfig.appname;
+}
 
+//' Create an application log directory as needed
 if (!oFSO.FolderExists(sLogPath)) {
 	oFSO.CreateFolder(sLogPath);
+}
+
+sLogFile = 'error.log';
+if (oConfig.logging.filename) {
+	sLogFile = oConfig.logging.filename;
 }
 
 //' Define the R interpreter
@@ -36,7 +48,7 @@ var Ropts          = "--vanilla";
 //' --no-save --no-environ --no-site-file --no-restore --no-Rconsole --no-init-file
 
 var RScriptFile    = "dist\\script\\R\\run.R";
-var Outfile        = sLogPath + "\\" + oConfig.log_filename;
+var Outfile        = sLogPath + "\\" + sLogFile;
 
 var strCommand     = [Rexe, Ropts, RScriptFile, "1>", Outfile, "2>&1"].join(" ");
 var intWindowStyle = 0;
@@ -58,5 +70,4 @@ var intWindowStyle = 0;
 //' continue running script after launching R
 var bWaitOnReturn  = false;
 
-//' the following is a Sub call, so no parenthesis (if using vb)
 oShell.Run(strCommand, intWindowStyle, bWaitOnReturn);
