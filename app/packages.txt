@@ -4,8 +4,8 @@
 # If not available, they will be installed into app/library.  Custom source
 # packages need to be installed manually.
 
+# bare miniminum: configurations are stored in json format
 jsonlite
+
+# if deploying shiny based applications:
 shiny
-dplyr
-ggplot2
-lubridate
