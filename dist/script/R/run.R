@@ -4,6 +4,11 @@
 appwd = getwd()
 applibpath = file.path(appwd, 'app', 'library')
 
+# create app/library if it doesn't exist (e.g. first run)
+if (!dir.exists(applibpath)) {
+  dir.create(applibpath)
+}
+
 .libPaths(c(applibpath, .Library))
 
 message('library paths:\n', paste('... ', .libPaths(), sep='', collapse='\n'))
@@ -42,6 +47,7 @@ appexit_msg = tryCatch({
   )$package
 
   message('ensuring packages: ', paste(packages, collapse = ', '))
+  setWinProgressBar(pb, 0, label = 'Ensuring package dependencies ...')
   ._ = lapply(packages, ensure, repo = config$packages$cran)
 
   for (i in seq_along(packages)) {
