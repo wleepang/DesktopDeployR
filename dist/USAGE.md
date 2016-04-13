@@ -58,6 +58,6 @@ Application launch framework
 
 `/script/R/run.R`:
   The primary script for initializing the R environment and executing application launch via R.
-  Will source('<project root>/app/app.R') to launch the application.
+  Will source(`<project root>/app/app.R`) to launch the application.
 
-  This file needs to exist and have appropriate application launch commands (e.g. shiny::runApp(...))
+  This file needs to exist and have appropriate application launch commands (e.g. `shiny::runApp(...)``)
