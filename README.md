@@ -92,7 +92,7 @@ The file `app/config.cfg` is a JSON-ish formatted file that configures how the
 application is launched.  Block (`/* ... */`) and line level (`// ...`) comments
 are allowed - they are removed to create valid JSON before the file is parsed.
 
-*Root level options:*
+**Root level options:**
 
 | Option     | Description |
 | :---       | :--- |
@@ -101,7 +101,7 @@ are allowed - they are removed to create valid JSON before the file is parsed.
 | `r_bindir` | (Optional; Default: `"dist\\R-Portable\\App\\R-Portable\\bin\\"`) A string specifying the path to the `<R_HOME>/bin/` directory for the version of R binaries to use. |
 | `logging`  | (Optional; Default: `undefined`) An object with elements specifying logging options (see below) |
 
-*Logging Options:*
+**Logging Options:**
 
 | Option            | Description |
 | :---              | :--- |
@@ -125,7 +125,7 @@ on isolated workstations.  Both R-portable and package dependencies can be compi
 with the installer.  This means that a "first run" that ensures all package
 dependencies, must occur before compiling an installer.
 
-*TBD*: an example InnoSetup installer compile script
+**TBD**: an example InnoSetup installer compile script
 
 
 ## Notes
@@ -138,7 +138,8 @@ required or modify `./app/config.cfg` to point to the desired R installation
 
 ### Version tracking
 Due to their potentially large sizes, it is not recommended that the following
-folders be tracked by version control (i.e. Git)
+folders be tracked by version control (i.e. Git):
+
 * `/app/library/`
 * `/dist/R-Portable`
 
