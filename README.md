@@ -7,6 +7,7 @@ by providing both a portable R executable environment and a private application
 package library.
 
 For more information on how this framework was developed please read:
+
 * http://oddhypothesis.blogspot.com/2014/04/deploying-self-contained-r-apps-to.html
 * http://oddhypothesis.blogspot.com/2016/04/desktop-deployr.html
 
