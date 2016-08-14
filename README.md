@@ -58,9 +58,11 @@ Install it into:
 
 #### Install application scripts / assets
 For example - a shiny app:
+
 * create a folder called `app/shiny`
 * put `ui.R`, `server.R`, and any other related files into `app/shiny`
 * edit `app/app.R`:
+  
 	```r
 	# assuming all shiny app code (ui.R and server.R are in ./app/shiny)
 	shiny::runApp('./app/shiny')
