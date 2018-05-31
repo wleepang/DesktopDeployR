@@ -11,6 +11,12 @@ For more information on how this framework was developed please read:
 * http://oddhypothesis.blogspot.com/2014/04/deploying-self-contained-r-apps-to.html
 * http://oddhypothesis.blogspot.com/2016/04/desktop-deployr.html
 
+## Target Audience
+Software Developers and Research Scientists who need to share applications in an
+environment where installing system / OS level software can be challenging and 
+where use of other isolation and portability techniques (e.g. Docker containers)
+is not feasible.
+
 ## Usage
 
 ### Develop an Application
