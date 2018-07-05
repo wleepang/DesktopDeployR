@@ -13,7 +13,7 @@ For more information on how this framework was developed please read:
 
 ## Target Audience
 Software Developers and Research Scientists who need to share applications in an
-environment where installing system / OS level software can be challenging and 
+environment where installing system / OS level software can be challenging and
 where use of other isolation and portability techniques (e.g. Docker containers)
 is not feasible.
 
@@ -68,7 +68,7 @@ For example - a shiny app:
 * create a folder called `app/shiny`
 * put `ui.R`, `server.R`, and any other related files into `app/shiny`
 * edit `app/app.R`:
-  
+
 	```r
 	# assuming all shiny app code (ui.R and server.R are in ./app/shiny)
 	shiny::runApp('./app/shiny')
@@ -106,8 +106,17 @@ are allowed - they are removed to create valid JSON before the file is parsed.
 | :---       | :--- |
 | `appname`  | The name of the application.  Displayed in the title of the progress bar shown during initialization, and used to name folders for logs based on logging settings (see below). |
 | `packages` | (Optional: Default: `"http://cran.rstudio.com"`) An object with a single element `cran` that specifies the CRAN mirror to use for installing packages.  Alternatively, this can point to a private CRAN-like package repository for more control over package versions. |
-| `r_bindir` | (Optional; Default: `"dist\\R-Portable\\App\\R-Portable\\bin\\"`) A string specifying the path to the `<R_HOME>/bin/` directory for the version of R binaries to use. |
+| `r_exec` | (Optional; Default: `"dist\\R-Portable\\App\\R-Portable\\bin\\"`) An object with elements specifying  R execution options (see below). |
 | `logging`  | (Optional; Default: `undefined`) An object with elements specifying logging options (see below) |
+
+
+**R Executable Options**
+| Option            | Description |
+| :---              | :--- |
+| `home`        | (Optional; Default: `"dist\\R-Portable\\App\\R-Portable\\bin\\"`) Path to `<R_HOME>/bin` - the R environment to use to run the app.  |
+| `command` | (Optional; Default: `Rscript.exe`) Name of the specific R interpreter executable to use.  |
+| `options` | (Optional; Default: `--vanilla`) Options to pass to the R interpreter executable.  |
+
 
 **Logging Options:**
 
