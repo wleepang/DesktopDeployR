@@ -21,11 +21,38 @@ if (this.JSON) {
 	WScript.Quit(1);
 }
 
+var oDEFAULTS = {
+	"packages": {
+		"cran": "http://cran.rstudio.com"
+	},
+
+	"r_exec": {
+		"home": "dist\\R-Portable\\App\\R-Portable\\bin",
+
+		//' Rscript.exe is much more efficient than R.exe CMD BATCH
+		"command": "Rscript.exe",
+
+		//' --vanilla implies the following flags:
+		//' --no-save --no-environ --no-site-file --no-restore --no-Rconsole --no-init-file
+		"options": "--vanilla"
+	},
+
+	"logging": {
+		"use_userprofile": false,
+		"filename": "error.log"
+	}
+}
+
+// Unfortunately, "modern" ECMAscript is not supported by wscript, so
+// conveniences like:
+// var oCONFIG = Object.assign(oConfig, oDEFAULTS);
+// are not supported
+
 // Determine where to keep the error log
 // If deployed to users individually, keep with the deployment (default)
 // If deployed to a central location (e.g. a network share) use a directory in
 // each user's %userprofile%
-sLogPath = 'log';
+var sLogPath = 'log';
 if (oConfig.logging.use_userprofile) {
 	//' Determine User Home directory
 	var sUPath = oShell.ExpandEnvironmentStrings("%USERPROFILE%");
@@ -37,33 +64,26 @@ if (!oFSO.FolderExists(sLogPath)) {
 	oFSO.CreateFolder(sLogPath);
 }
 
-sLogFile = 'error.log';
-if (oConfig.logging.filename) {
-	sLogFile = oConfig.logging.filename;
-}
+var sLogFile = oConfig.logging.filename ? oConfig.logging.filename : oDEFAULTS.logging.filename;
 
 //' Define the R interpreter
-var Rbindir        = "dist\\R-Portable\\App\\R-Portable\\bin";
-if (oConfig.r_bindir) {
-	var Rbindir = oConfig.r_bindir;
-}
+var Rhome = oConfig.r_exec.home ? oConfig.r_exec.home : oDEFAULTS.r_exec.home;
+var Rcmd  = oConfig.r_exec.command ? oConfig.r_exec.command : oDEFAULTS.r_exec.command;
+var Ropts = oConfig.r_exec.options ? oConfig.r_exec.options : oDEFAULTS.r_exec.options;
 
-//' Rscript.exe is much more efficient than R.exe CMD BATCH
-var Rexe           = Rbindir + "\\Rscript.exe";
-var Ropts          = "--vanilla";
-
-//' --vanilla implies the following flags:
-//' --no-save --no-environ --no-site-file --no-restore --no-Rconsole --no-init-file
+Rexe = Rhome + "\\" + Rcmd;
 
 if (!oFSO.FileExists(Rexe)) {
 	oShell.Popup('Error: R executable not found:\n' + Rexe);
 	WScript.Quit(1);
 }
 
+function enquote(s) { return "\"" + s + "\""; }
+
 var RScriptFile    = "dist\\script\\R\\run.R";
 var Outfile        = sLogPath + "\\" + sLogFile;
 
-var strCommand     = [Rexe, Ropts, RScriptFile, "1>", Outfile, "2>&1"].join(" ");
+var strCommand     = [enquote(Rexe), Ropts, enquote(RScriptFile), "1>", Outfile, "2>&1"].join(" ");
 var intWindowStyle = 0;
 /*
 ' other values:
