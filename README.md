@@ -111,6 +111,7 @@ are allowed - they are removed to create valid JSON before the file is parsed.
 
 
 **R Executable Options**
+
 | Option            | Description |
 | :---              | :--- |
 | `home`        | (Optional; Default: `"dist\\R-Portable\\App\\R-Portable\\bin\\"`) Path to `<R_HOME>/bin` - the R environment to use to run the app.  |
