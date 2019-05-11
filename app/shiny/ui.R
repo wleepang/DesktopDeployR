@@ -20,6 +20,7 @@ ui = fluidPage(
     ),
 
     mainPanel(
+      tags$div(sprintf("Global Variable Value: %s", GLOBAL_VAR)),
       verbatimTextOutput("dataSummary"),
       tableOutput("dataView")
     )
