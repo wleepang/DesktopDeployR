@@ -21,6 +21,10 @@ server = function(input, output, session) {
       "iris" = iris)
   })
 
+  output$commandArgs = renderPrint({
+    commandArgs()
+  })
+
   output$dataSummary = renderPrint({
     summary(dataset())
   })

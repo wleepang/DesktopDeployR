@@ -11,8 +11,11 @@
 var oFSO = WScript.CreateObject("Scripting.FileSystemObject");
 var oShell = WScript.CreateObject("WScript.Shell");
 
+var sBaseDir = oFSO.GetAbsolutePathName('.');
 var fConfig = oFSO.OpenTextFile('app\\config.cfg', 1); // 1 = for reading
 var sConfig = (fConfig.AtEndOfStream) ? "" : fConfig.ReadAll();
+
+fConfig.Close()
 
 if (this.JSON) {
 	var oConfig = (sConfig !== "") ? JSON.parse(JSON.minify(sConfig)) : undefined;
@@ -52,11 +55,12 @@ var oDEFAULTS = {
 // If deployed to users individually, keep with the deployment (default)
 // If deployed to a central location (e.g. a network share) use a directory in
 // each user's %userprofile%
+//' Determine User Home directory
+var sUPath = oShell.ExpandEnvironmentStrings("%USERPROFILE%");
+var sAppUPath = sUPath + "\\." + oConfig.appname;
 var sLogPath = 'log';
 if (oConfig.logging.use_userprofile) {
-	//' Determine User Home directory
-	var sUPath = oShell.ExpandEnvironmentStrings("%USERPROFILE%");
-	var sLogPath = sUPath + "\\." + oConfig.appname;
+	var sLogPath = sAppUPath;
 }
 
 //' Create an application log directory as needed
@@ -80,11 +84,20 @@ if (!oFSO.FileExists(Rexe)) {
 
 function enquote(s) { return "\"" + s + "\""; }
 
-var RScriptFile    = "dist\\script\\R\\run.R";
+var RScriptFile    = sBaseDir + "\\dist\\script\\R\\run.R";
 var Outfile        = sLogPath + "\\" + sLogFile;
 
-var strCommand     = [enquote(Rexe), Ropts, enquote(RScriptFile), "1>", Outfile, "2>&1"].join(" ");
+var strCommand     = [enquote(Rexe), Ropts, enquote(RScriptFile), ">", enquote(Outfile), "2>&1"].join(" ");
 var intWindowStyle = 0;
+
+// Either .Run or Rscript inappropriately captures the redirection to the log file as a parameter
+// As a workaround create a temporary .bat file to invoke strCommand as needed
+var batFilePath = enquote(sAppUPath + '\\run.bat');
+var batFile = oFSO.CreateTextFile(sAppUPath + '\\run.bat', 2); // 2 = for writing
+batFile.WriteLine("cd " + enquote(sBaseDir));
+batFile.WriteLine(strCommand);
+batFile.Close();
+
 /*
 ' other values:
 ' 0 Hide the window and activate another window.
@@ -103,4 +116,4 @@ var intWindowStyle = 0;
 //' continue running script after launching R
 var bWaitOnReturn  = false;
 
-oShell.Run(strCommand, intWindowStyle, bWaitOnReturn);
+oShell.Run(batFilePath, intWindowStyle, bWaitOnReturn);
