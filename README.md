@@ -50,7 +50,7 @@ you make to the framework.
 The framework can be used with both a system installed version of R or R-Portable.
 The latter is recommended as it provides the most application isolation and allows
 for applications to be deployed to users unable to install R on their own (i.e.
-they lack sufficient system privileges).
+they lack sufficient system privileges). However, R-Portable is only available for Microsoft Windows.
 
 Download R-portable from:
 https://sourceforge.net/projects/rportable/
