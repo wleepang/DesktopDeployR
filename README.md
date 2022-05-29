@@ -148,6 +148,79 @@ dependencies, must occur before compiling an installer.
 
 ## Notes
 
+### Using a Reset/Refresh button in your app
+If you want to add a Reset/Refresh button that would allow the user to restart your app, one way to do this
+could be as follows:
+
+**Create the button by adding the following into your app_ui.R file:**
+
+```r
+shiny::actionButton("reset","Reset",  class = "btn-refresh")
+```
+
+**Show a dialog box to confirm (or to cancel) app refreshing when clicking on the "Reset" button by adding the following into your app_server.R file:**
+```r
+observeEvent(input$reset, {
+    
+      modal_confirm <- modalDialog(
+        "Are you sure you want to reset the app\u003f",
+        title = "Reset app",
+        footer = tagList(
+          actionButton("cancel", "Cancel"),
+          actionButton("ok", "Reset", 
+          class = "btn btn-danger", 
+          style="color: #fff; background-color: red; border-color: red")
+        )
+      )
+      
+      showModal(modal_confirm)
+  })
+  
+observeEvent(input$ok, {
+  aggg_result = -1
+  if(aggg_result == -1)
+  {
+    session$reload()
+    return()
+  }
+})
+
+observeEvent(input$cancel, {
+  removeModal()
+})
+```
+
+Importantly, if you add only the lines of code above, the app will crash when clicking on the "Reset" button of the dialog box
+because the R process will stop when the current session will end (which is the expected behavior of the DesktopDeployR framework) before reloading. 
+A solution to this problem can be to tell R to stop running only when a session is ended AND when the button 
+confirming the refreshing action has NOT been clicked. Below is an example of code that would implement this idea. (You will notice
+that in addition to the two first conditions previously evocated [the session is ended AND the button confirming refreshing app (here identified in the code as "ok" and named "Reset" in the UI) has been clicked], there is a third condition related to the number of current users of the app. 
+In principle, this is not necessary when your app is for a desktop use only. However, if your app is also used online (eg, on a shinyapps.io plateform), the code below will allow to preserve the currently working sessions.)
+
+**Set the initial number of sessions by adding the following into a global.R file**
+```r
+users <- shiny::reactiveValues(count = 0)
+```
+     
+**Manage app closure by adding the following into your app_server.R file**
+```r     
+# Increasing users count when starting new session
+  isolate({users$count <- users$count + 1 
+  })
+  
+# Decreasing users count when closing session
+# Stopping app when count is 0 AND when the "Reset" button of the dialog box has not been clicked
+  session$onSessionEnded(function() {
+    isolate({
+      users$count = users$count - 1
+      if (users$count == 0 && is.null(input$ok)) stopApp()
+    })
+  })
+
+# The following comments were helpful to build the code: 
+# https://stackoverflow.com/questions/47728208/how-many-users-are-connected-to-my-shiny-application
+```
+
 ### Using a different (newer) version of R
 Either replace `./dist/R-Portable/` with the version of `R-Portable` that is
 required or modify `./app/config.cfg` to point to the desired R installation
